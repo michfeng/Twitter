@@ -63,6 +63,9 @@ public class TimelineActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.compose) {
             // navigate to compose activity
             Toast.makeText(this, "Compose!", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this,ComposeActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
