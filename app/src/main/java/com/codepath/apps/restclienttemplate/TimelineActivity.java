@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -65,5 +66,17 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.e(TAG,"onFailure" + response, throwable);
             }
         });
+    }
+
+    // called when user taps logout button
+    private void clickLogout() {
+        // forget who's logged in
+        TwitterApp.getRestClient(this).clearAccessToken();
+
+        // go back to LoginActivity
+        Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // ensures Back button doesnt work
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // ^
+        finish();
     }
 }
