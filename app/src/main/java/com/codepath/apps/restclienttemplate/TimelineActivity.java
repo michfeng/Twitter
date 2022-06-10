@@ -2,12 +2,16 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -36,6 +40,7 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetsAdapter adapter;
     Button logoutButton;
+    int lowID;
 
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
@@ -53,12 +58,24 @@ public class TimelineActivity extends AppCompatActivity {
 
         // initiate list of tweets and adapter
         tweets = new ArrayList<>();
-        adapter = new TweetsAdapter(this,tweets);
+        adapter = new TweetsAdapter(this, tweets);
 
         // recycler view setup: layout manager anda adapter
+        LinearLayoutManager manager = new LinearLayoutManager(this);
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
         populateHomeTimeline();
+
+        // enable endless pagniation
+        /*rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(manager) {
+
+            @Override
+            // called whenever new page needs tobe loaded to fill list
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // send api request for appropriately paginated data
+                fetchTimelineAsync(page);
+            }
+        });*/
 
         logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +100,14 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
-                android.R.color.holo_red_light );
+                android.R.color.holo_red_light);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        int color = ContextCompat.getColor(this, R.color.twitter_blue);
+        ColorDrawable colorDrawable = new ColorDrawable(color);
+        actionBar.setBackgroundDrawable(colorDrawable);
+
     }
 
     // send network request to fetch updated data

@@ -1,8 +1,11 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -44,6 +47,7 @@ public class ComposeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String tweetContent = etCompose.getText().toString();
+                Toast.makeText(ComposeActivity.this, "hellooooo", Toast.LENGTH_SHORT);
                 if (tweetContent.isEmpty()) {
                     Toast.makeText(ComposeActivity.this, "Sorry, your tweet cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
@@ -85,6 +89,11 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
 
+        ActionBar actionBar = getSupportActionBar();
+
+        int color = ContextCompat.getColor(this, R.color.twitter_blue);
+        ColorDrawable colorDrawable = new ColorDrawable(color);
+        actionBar.setBackgroundDrawable(colorDrawable);
 
     }
 }

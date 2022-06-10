@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,12 +69,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     // define viewholder
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
         ImageView ivProfileImage;
         TextView tvBody;
         TextView tvScreenName;
         ImageView imageView;
         TextView dateAdded;
+        TextView name;
 
         // for converting time to relativeTimeAgo
         private static final int SECOND_MILLIS = 1000;
@@ -89,18 +90,24 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             imageView = itemView.findViewById(R.id.imageView);
             dateAdded = itemView.findViewById(R.id.dateAdded);
+            name = itemView.findViewById(R.id.name);
 
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Tweet tweet)  {
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
-            Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            Glide.with(context).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
 
-            if (tweet.imUrl.size() == 1)
-                Glide.with(context).load(tweet.imUrl.get(0)).into(imageView);
+            if (tweet.imUrl != null)
+                Glide.with(context).load(tweet.imUrl).into(imageView);
+            else
+                imageView.setVisibility(View.GONE);
 
             dateAdded.setText(getRelativeTimeAgo(tweet.createdAt));
+
+            name.setText(tweet.user.name);
         }
 
         private String getRelativeTimeAgo(String createdAt) {
@@ -132,6 +139,27 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 Log.i("hi","relativeTimeAgo failed");
             }
             return "";
+        }
+
+        @Override
+        public void onClick(View view) {
+            // get position
+            int position = getAdapterPosition();
+
+            // make sure position is valid
+            if (position != RecyclerView.NO_POSITION) {
+                // get tweet at position
+                Tweet tweet = tweets.get(position);
+                Log.i("ABCDS","tweet: "+ tweet.body);
+
+                // create intent for new activity
+                Intent intent = new Intent(context,DetailActivity.class);
+
+                intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+
+                // show activity
+                context.startActivity(intent);
+            }
         }
     }
 }

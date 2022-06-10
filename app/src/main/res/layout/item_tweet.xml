@@ -16,10 +16,12 @@
         android:id="@+id/tvScreenName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_toEndOf="@+id/ivProfileImage"
-        android:text="TextView"
-        tools:text="michellefeng" />
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/name"
+        android:textColor="@color/medium_gray"
+        tools:text="/@michellefeng" />
 
     <TextView
         android:id="@+id/tvBody"
@@ -52,5 +54,15 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="5dp"
+        android:textColor="@color/medium_gray"
         tools:text="3d" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:textStyle="bold"
+        tools:text="Michelle Feng" />
 </RelativeLayout>

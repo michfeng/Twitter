@@ -17,7 +17,7 @@ public class Tweet {
     public String body;
     public String createdAt;
     public User user;
-    public List<String> imUrl;
+    public String imUrl;
     public String date;
 
     public Tweet () {}
@@ -27,7 +27,6 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
-        tweet.imUrl = new ArrayList<>();
         tweet.date = jsonObject.getString("created_at");
 
         // if there are extended entities, which holds media for a tweet
@@ -37,7 +36,7 @@ public class Tweet {
             // checks whether there is media
             if (ext_entities.has("media")){
                 JSONArray jArr = ext_entities.getJSONArray("media");
-                tweet.imUrl.add(jArr.getJSONObject(0).getString("media_url"));
+                tweet.imUrl = jArr.getJSONObject(0).getString("media_url");
             }
 
             // note: imUrl is empty if there is no media, has one entry if there is
